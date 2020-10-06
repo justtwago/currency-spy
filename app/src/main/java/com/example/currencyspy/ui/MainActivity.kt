@@ -1,7 +1,8 @@
-package com.example.currencyspy
+package com.example.currencyspy.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.currencyspy.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
