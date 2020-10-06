@@ -1,0 +1,32 @@
+ext.buildConfig = [
+    minSdkVersion   : 23,
+    targetSdkVersion: 30,
+    javaVersion     : 1.8
+]
+
+ext.versions = [
+    androidPlugin           : '4.0.1',
+    androidKtxCore          : '1.3.2',
+    androidXAppCompat       : '1.2.0',
+    androidXConstraintLayout: '2.0.1',
+    kotlin                  : '1.4.10',
+    junit                   : '4.13',
+]
+
+
+ext.gradlePlugins = [
+    android: "com.android.tools.build:gradle:$versions.androidPlugin",
+    kotlin : "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin",
+]
+
+ext.deps = [
+    androidX: [
+        appCompat       : "androidx.appcompat:appcompat:$versions.androidXAppCompat",
+        constraintLayout: "androidx.constraintlayout:constraintlayout:$versions.androidXConstraintLayout",
+        ktxCore         : "androidx.core:core-ktx:$versions.androidKtxCore"
+    ],
+    kotlin  : [
+        stdlib: "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin"
+    ],
+    junit   : "junit:junit:$versions.junit",
+]
