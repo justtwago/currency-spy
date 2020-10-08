@@ -25,35 +25,61 @@ android {
     }
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
+        freeCompilerArgs = [
+            '-Xuse-experimental=kotlin.contracts.ExperimentalContracts',
+            '-Xopt-in=kotlin.RequiresOptIn',
+            '-Xuse-experimental=kotlin.time.ExperimentalTime',
+            '-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi',
+            '-Xopt-in=kotlinx.coroutines.FlowPreview',
+            '-Xinline-classes',
+            "-Xallow-result-return-type"
+        ]
     }
 
     buildFeatures {
         viewBinding = true
     }
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
 }
 
 dependencies {
+    implementation project(':domain')
+
+    coreLibraryDesugaring deps.desugaring
     implementation deps.kotlin.stdlib
+    implementation deps.kotlin.coroutines.core
+    implementation deps.kotlin.coroutines.android
+
     implementation deps.androidX.ktxCore
     implementation deps.androidX.appCompat
     implementation deps.androidX.constraintLayout
     implementation deps.androidX.lifecycle.extensions
     implementation deps.androidX.lifecycle.viewModel
     implementation deps.androidX.lifecycle.liveData
-
     implementation deps.androidX.navigation.fragment
     implementation deps.androidX.navigation.navigationUi
+    implementation deps.androidX.paging
 
     implementation deps.hilt.android.lib
     kapt deps.hilt.android.compiler
     implementation deps.hilt.jetpack.viewModel
     kapt deps.hilt.jetpack.compiler
 
+    testImplementation deps.kotlin.coroutines.test
+    testImplementation deps.androidX.archCoreTesting
     testImplementation deps.junit
+    testImplementation deps.kotlinTestAssertions
+    testImplementation deps.mockk
 }
