@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Currency Spy</string>
+    <string name="currency_rates_fetching_error">An error occurred!</string>
+    <string name="currency_rates_fetching_retry_button">Retry</string>
 </resources>

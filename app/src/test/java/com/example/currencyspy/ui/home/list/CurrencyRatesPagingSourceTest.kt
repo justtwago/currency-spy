@@ -1,6 +1,8 @@
 package com.example.currencyspy.ui.home.list
 
 import androidx.paging.PagingSource
+import com.example.currencyspy.ui.home.list.pagesource.CurrencyRatesPagingSource
+import com.example.currencyspy.ui.home.list.pagesource.MockedCurrencyRatesSource
 import com.example.domain.CurrencyRate
 import io.kotest.matchers.shouldBe
 import io.mockk.MockKAnnotations

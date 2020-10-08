@@ -1,4 +1,4 @@
-package com.example.currencyspy.ui.home.list
+package com.example.currencyspy.ui.home.list.pagesource
 
 import com.example.domain.CurrencyRate
 import java.time.LocalDate

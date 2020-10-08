@@ -7,7 +7,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.currencyspy.ui.home.list.CurrencyRatesPagerFactory
+import com.example.currencyspy.ui.home.list.pagesource.CurrencyRatesPagerFactory
 import com.example.domain.CurrencyRate
 
 class HomeViewModel @ViewModelInject constructor(
