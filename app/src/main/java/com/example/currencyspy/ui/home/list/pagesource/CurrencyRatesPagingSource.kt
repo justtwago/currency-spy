@@ -1,4 +1,4 @@
-package com.example.currencyspy.ui.home.list
+package com.example.currencyspy.ui.home.list.pagesource
 
 import androidx.paging.PagingSource
 import com.example.domain.CurrencyRate

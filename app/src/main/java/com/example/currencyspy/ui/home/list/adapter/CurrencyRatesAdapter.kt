@@ -1,4 +1,4 @@
-package com.example.currencyspy.ui.home.list
+package com.example.currencyspy.ui.home.list.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
