@@ -1,3 +1,4 @@
+include ':networking'
 include ':domain'
 include ':app'
 rootProject.name = "Currency Spy"
