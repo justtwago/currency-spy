@@ -5,41 +5,94 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.currencyspy.R
 import com.example.currencyspy.databinding.ItemCurrencyRateBinding
-import com.example.domain.CurrencyRate
+import com.example.currencyspy.databinding.ItemHeaderBinding
+import java.time.LocalDate
 
-class CurrencyRatesAdapter : PagingDataAdapter<CurrencyRate, ViewHolder>(DiffCallback) {
+private const val HEADER_TYPE = 1
+private const val RATE_TYPE = 2
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemCurrencyRateBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
-        )
-        return ViewHolder(binding)
+class CurrencyRatesAdapter :
+    PagingDataAdapter<CurrencyRateItem, RecyclerView.ViewHolder>(DiffCallback) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            HEADER_TYPE -> HeaderViewHolder.create(parent)
+            RATE_TYPE -> RateViewHolder.create(parent)
+            else -> error("Unsupported item type")
+        }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getItem(position) ?: error("Currency rate item can't be null")
-        holder.bind(item)
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is CurrencyRateItem.Header -> HEADER_TYPE
+            is CurrencyRateItem.Rate -> RATE_TYPE
+            else -> error("Unsupported item type")
+        }
     }
 
-    private object DiffCallback : DiffUtil.ItemCallback<CurrencyRate>() {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (val item = getItem(position) ?: error("Currency rate item can't be null")) {
+            is CurrencyRateItem.Header -> (holder as HeaderViewHolder).bind(item)
+            is CurrencyRateItem.Rate -> (holder as RateViewHolder).bind(item)
+        }
+    }
+
+    private object DiffCallback : DiffUtil.ItemCallback<CurrencyRateItem>() {
         override fun areItemsTheSame(
-            oldItem: CurrencyRate,
-            newItem: CurrencyRate
+            oldItem: CurrencyRateItem,
+            newItem: CurrencyRateItem
         ) = oldItem == newItem
 
         override fun areContentsTheSame(
-            oldItem: CurrencyRate,
-            newItem: CurrencyRate
-        ) = oldItem.date == newItem.date && oldItem.currencyCode == newItem.currencyCode
+            oldItem: CurrencyRateItem,
+            newItem: CurrencyRateItem
+        ) = oldItem == newItem
     }
 }
 
-class ViewHolder(
+class HeaderViewHolder(
+    private val binding: ItemHeaderBinding
+) : RecyclerView.ViewHolder(binding.root) {
+
+    fun bind(headerItem: CurrencyRateItem.Header) = with(binding) {
+        val today = LocalDate.now()
+        header.text = when (headerItem.date) {
+            today -> root.context.getString(R.string.currency_rate_header_today)
+            today.minusDays(1) -> root.context.getString(R.string.currency_rate_header_yesterday)
+            else -> headerItem.date.toString()
+        }
+    }
+
+    companion object {
+        fun create(parent: ViewGroup): HeaderViewHolder {
+            val binding = ItemHeaderBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+            return HeaderViewHolder(binding)
+        }
+    }
+}
+
+class RateViewHolder(
     private val binding: ItemCurrencyRateBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(currencyRate: CurrencyRate) {
-        binding.currencyRate.text = "${currencyRate.rate} ${currencyRate.currencyCode}"
+    fun bind(rateItem: CurrencyRateItem.Rate) = with(binding) {
+        currencyRate.text = root.context.getString(
+            R.string.currency_rate_price,
+            rateItem.currencyRate.rate.toString(),
+            rateItem.currencyRate.currencyCode
+        )
+    }
+
+    companion object {
+        fun create(parent: ViewGroup): RateViewHolder {
+            val binding = ItemCurrencyRateBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+            return RateViewHolder(binding)
+        }
     }
 }

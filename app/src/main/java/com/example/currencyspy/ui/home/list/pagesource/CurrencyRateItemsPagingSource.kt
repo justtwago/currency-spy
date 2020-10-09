@@ -1,7 +1,8 @@
 package com.example.currencyspy.ui.home.list.pagesource
 
 import androidx.paging.PagingSource
-import com.example.domain.CurrencyRate
+import com.example.currencyspy.ui.home.list.adapter.CurrencyRateItem
+import com.example.currencyspy.ui.home.list.adapter.CurrencyRateItemMapper
 import com.example.networking.currency.CallResult
 import com.example.networking.currency.CurrencyRatesNetwork
 import java.time.LocalDate
@@ -9,15 +10,19 @@ import javax.inject.Inject
 
 typealias Day = Int
 
-class CurrencyRatesPagingSource @Inject constructor(
-    private val currencyRatesNetwork: CurrencyRatesNetwork
-) : PagingSource<LocalDate, CurrencyRate>() {
-    override suspend fun load(params: LoadParams<LocalDate>): LoadResult<LocalDate, CurrencyRate> {
+class CurrencyRateItemsPagingSource @Inject constructor(
+    private val currencyRatesNetwork: CurrencyRatesNetwork,
+    private val currencyRateItemMapper: CurrencyRateItemMapper
+) : PagingSource<LocalDate, CurrencyRateItem>() {
+
+    override suspend fun load(
+        params: LoadParams<LocalDate>
+    ): LoadResult<LocalDate, CurrencyRateItem> {
         val today = LocalDate.now()
         val nextPageStartDate = params.key ?: today
         return when (val response = currencyRatesNetwork.getCurrencyRates(nextPageStartDate)) {
             is CallResult.Success -> LoadResult.Page(
-                data = response.body,
+                data = currencyRateItemMapper.map(currencyRates = response.body),
                 prevKey = if (nextPageStartDate == today) null else nextPageStartDate.plusDays(1),
                 nextKey = nextPageStartDate.minusDays(1)
             )

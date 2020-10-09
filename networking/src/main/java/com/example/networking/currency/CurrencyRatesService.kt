@@ -11,6 +11,6 @@ internal interface CurrencyRatesService {
     @GET("{date}")
     suspend fun getCurrencyRates(
         @Path("date") date: LocalDate,
-        @Query("symbols") currencies: String = "PLN"
+        @Query("symbols") currencies: String = "PLN, USD, RUB, UAH, UZS"
     ): HistoricalRatesResponse
 }

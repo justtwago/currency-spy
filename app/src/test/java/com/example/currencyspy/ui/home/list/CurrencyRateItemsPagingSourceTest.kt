@@ -1,7 +1,9 @@
 package com.example.currencyspy.ui.home.list
 
 import androidx.paging.PagingSource
-import com.example.currencyspy.ui.home.list.pagesource.CurrencyRatesPagingSource
+import com.example.currencyspy.ui.home.list.adapter.CurrencyRateItem
+import com.example.currencyspy.ui.home.list.adapter.CurrencyRateItemMapper
+import com.example.currencyspy.ui.home.list.pagesource.CurrencyRateItemsPagingSource
 import com.example.domain.CurrencyRate
 import com.example.networking.currency.CallResult
 import com.example.networking.currency.CurrencyRatesNetwork
@@ -15,15 +17,17 @@ import org.junit.Test
 import java.lang.Exception
 import java.time.LocalDate
 
-class CurrencyRatesPagingSourceTest {
+class CurrencyRateItemsPagingSourceTest {
     @RelaxedMockK private lateinit var mockedCurrencyRatesNetwork: CurrencyRatesNetwork
-    private lateinit var pagingSource: CurrencyRatesPagingSource
+    @RelaxedMockK private lateinit var mockedCurrencyRateItemMapper: CurrencyRateItemMapper
+    private lateinit var pagingSource: CurrencyRateItemsPagingSource
 
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        pagingSource = CurrencyRatesPagingSource(
-            currencyRatesNetwork = mockedCurrencyRatesNetwork
+        pagingSource = CurrencyRateItemsPagingSource(
+            currencyRatesNetwork = mockedCurrencyRatesNetwork,
+            currencyRateItemMapper = mockedCurrencyRateItemMapper
         )
     }
 
@@ -32,6 +36,11 @@ class CurrencyRatesPagingSourceTest {
         coEvery {
             mockedCurrencyRatesNetwork.getCurrencyRates(today)
         } returns CallResult.Success(currencyRates)
+
+        coEvery { mockedCurrencyRateItemMapper.map(currencyRates) } returns listOf(
+            CurrencyRateItem.Header(date = currencyRates.first().date),
+            CurrencyRateItem.Rate(currencyRate = currencyRates.first())
+        )
 
         val loadParams = PagingSource.LoadParams.Refresh<LocalDate>(
             key = null,
@@ -42,7 +51,10 @@ class CurrencyRatesPagingSourceTest {
         val loadResult = pagingSource.load(loadParams)
 
         loadResult shouldBe PagingSource.LoadResult.Page(
-            data = currencyRates,
+            data = listOf(
+                CurrencyRateItem.Header(date = currencyRates.first().date),
+                CurrencyRateItem.Rate(currencyRate = currencyRates.first())
+            ),
             prevKey = null,
             nextKey = today.minusDays(1)
         )
@@ -54,6 +66,11 @@ class CurrencyRatesPagingSourceTest {
             mockedCurrencyRatesNetwork.getCurrencyRates(today.minusDays(1))
         } returns CallResult.Success(currencyRates)
 
+        coEvery { mockedCurrencyRateItemMapper.map(currencyRates) } returns listOf(
+            CurrencyRateItem.Header(date = currencyRates.first().date),
+            CurrencyRateItem.Rate(currencyRate = currencyRates.first())
+        )
+
         val loadParams = PagingSource.LoadParams.Append<LocalDate>(
             key = today.minusDays(1),
             loadSize = 1,
@@ -63,7 +80,10 @@ class CurrencyRatesPagingSourceTest {
         val loadResult = pagingSource.load(loadParams)
 
         loadResult shouldBe PagingSource.LoadResult.Page(
-            data = currencyRates,
+            data = listOf(
+                CurrencyRateItem.Header(date = currencyRates.first().date),
+                CurrencyRateItem.Rate(currencyRate = currencyRates.first())
+            ),
             prevKey = today,
             nextKey = today.minusDays(2)
         )
