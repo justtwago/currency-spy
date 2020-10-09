@@ -1,20 +1,18 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
-apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
     compileSdkVersion buildConfig.targetSdkVersion
 
     defaultConfig {
-        applicationId "com.example.currencyspy"
-
         minSdkVersion buildConfig.minSdkVersion
         targetSdkVersion buildConfig.targetSdkVersion
 
-        versionCode 1
-        versionName "1.0"
+        buildConfigField "String", "BASE_URL", "\"http://data.fixer.io/api/\""
+        buildConfigField "String", "API_KEY", "\"aaa7ddb038325c9f8cc6d9f3dd219836\""
     }
 
     buildTypes {
@@ -42,44 +40,25 @@ android {
             "-Xallow-result-return-type"
         ]
     }
-
-    buildFeatures {
-        viewBinding = true
-    }
-
-    testOptions {
-        unitTests.all {
-            useJUnitPlatform()
-        }
-    }
 }
 
 dependencies {
     implementation project(':domain')
-    implementation project(':networking')
 
     coreLibraryDesugaring deps.desugaring
     implementation deps.kotlin.stdlib
     implementation deps.kotlin.coroutines.core
-    implementation deps.kotlin.coroutines.android
 
-    implementation deps.androidX.ktxCore
-    implementation deps.androidX.appCompat
-    implementation deps.androidX.constraintLayout
-    implementation deps.androidX.lifecycle.extensions
-    implementation deps.androidX.lifecycle.viewModel
-    implementation deps.androidX.lifecycle.liveData
-    implementation deps.androidX.navigation.fragment
-    implementation deps.androidX.navigation.navigationUi
-    implementation deps.androidX.paging
+    api deps.retrofit
+    api deps.retrofitMoshi
+    api deps.moshi
+    api deps.okHttpIntereptor
+    kapt deps.moshiKotlinCodegen
 
     implementation deps.hilt.android.lib
     kapt deps.hilt.android.compiler
-    implementation deps.hilt.jetpack.viewModel
-    kapt deps.hilt.jetpack.compiler
 
     testImplementation deps.kotlin.coroutines.test
-    testImplementation deps.androidX.archCoreTesting
     testImplementation deps.junit
     testImplementation deps.kotlinTestAssertions
     testImplementation deps.mockk

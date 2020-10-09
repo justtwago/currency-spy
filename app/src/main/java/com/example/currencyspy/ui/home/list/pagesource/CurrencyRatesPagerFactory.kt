@@ -6,7 +6,7 @@ import com.example.domain.CurrencyRate
 import java.time.LocalDate
 import javax.inject.Inject
 
-private const val CURRENCY_RATES_PAGE_SIZE: Day = 25
+private const val CURRENCY_RATES_PAGE_SIZE: Day = 1
 
 class CurrencyRatesPagerFactory @Inject constructor(
     private val currencyRatesPagingSource: CurrencyRatesPagingSource
