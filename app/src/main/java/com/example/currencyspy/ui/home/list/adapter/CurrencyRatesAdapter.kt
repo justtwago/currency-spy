@@ -58,10 +58,18 @@ class HeaderViewHolder(
 
     fun bind(headerItem: CurrencyRateItem.Header) = with(binding) {
         val today = LocalDate.now()
-        header.text = when (headerItem.date) {
-            today -> root.context.getString(R.string.currency_rate_header_today)
-            today.minusDays(1) -> root.context.getString(R.string.currency_rate_header_yesterday)
-            else -> headerItem.date.toString()
+        when (headerItem.date) {
+            today -> {
+                header.text = root.context.getString(R.string.currency_rate_header_today)
+            }
+            today.minusDays(1) -> {
+                header.text = root.context.getString(R.string.currency_rate_header_yesterday)
+                header.setCompoundDrawables(null, null, null, null)
+            }
+            else -> {
+                header.text = headerItem.date.toString()
+                header.setCompoundDrawables(null, null, null, null)
+            }
         }
     }
 
@@ -80,11 +88,17 @@ class RateViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(rateItem: CurrencyRateItem.Rate) = with(binding) {
-        currencyRate.text = root.context.getString(
+        baseCurrencyHeader.text = root.context.getString(
+            R.string.currency_rate_base_currency,
+            rateItem.currencyRate.baseCurrencyCode
+        )
+        rate.text = root.context.getString(
             R.string.currency_rate_price,
             rateItem.currencyRate.rate.toString(),
             rateItem.currencyRate.currencyCode
         )
+        currency.text = rateItem.currencyRate.currencyCode
+        rootLayout.setOnClickListener { }
     }
 
     companion object {

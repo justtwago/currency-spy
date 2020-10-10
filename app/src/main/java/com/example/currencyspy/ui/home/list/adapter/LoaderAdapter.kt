@@ -29,10 +29,9 @@ class LoaderViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(loadState: LoadState, doOnRetryClicked: () -> Unit) = with(binding) {
-        retryButton.setOnClickListener { doOnRetryClicked() }
         progressLoader.isVisible = loadState is LoadState.Loading
-        warningIcon.isVisible = loadState is LoadState.Error
+        progressTitle.isVisible = loadState is LoadState.Loading
         errorMessage.isVisible = loadState is LoadState.Error
-        retryButton.isVisible = loadState is LoadState.Error
+        errorMessage.setOnClickListener { doOnRetryClicked() }
     }
 }
