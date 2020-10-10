@@ -1,4 +1,4 @@
-package com.example.currencyspy.ui.home.list.pagesource
+package com.example.currencyspy.ui.home.list.paging
 
 import androidx.paging.PagingSource
 import com.example.currencyspy.ui.home.list.adapter.CurrencyRateItem
@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 typealias Day = Int
 
-class CurrencyRateItemsPagingSource @Inject constructor(
+class CurrencyRateItemsPagingSource private constructor(
     private val currencyRatesNetwork: CurrencyRatesNetwork,
     private val currencyRateItemMapper: CurrencyRateItemMapper
 ) : PagingSource<LocalDate, CurrencyRateItem>() {
@@ -28,5 +28,15 @@ class CurrencyRateItemsPagingSource @Inject constructor(
             )
             is CallResult.Error -> LoadResult.Error(response.exception)
         }
+    }
+
+    class Factory @Inject constructor(
+        private val currencyRatesNetwork: CurrencyRatesNetwork,
+        private val currencyRateItemMapper: CurrencyRateItemMapper
+    ) {
+        fun create() = CurrencyRateItemsPagingSource(
+            currencyRatesNetwork = currencyRatesNetwork,
+            currencyRateItemMapper = currencyRateItemMapper
+        )
     }
 }

@@ -2,7 +2,9 @@
     <string name="app_name">Currency Spy</string>
     <string name="currency_rates_title">Let\'s track rates history!</string>
     <string name="currency_rates_fetching_error">An error occurred! Click to retry.</string>
+    <string name="currency_rates_fetching_initial_error">An error occurred! Swipe down to retry.</string>
     <string name="currency_rates_fetching_loading">Loading next day rates…</string>
+    <string name="currency_rates_fetching_initial_loading">Loading currency rates…</string>
     <string name="currency_rate_header_today">Today</string>
     <string name="currency_rate_header_yesterday">Yesterday</string>
     <string name="currency_rate_price">%1s %2$s</string>

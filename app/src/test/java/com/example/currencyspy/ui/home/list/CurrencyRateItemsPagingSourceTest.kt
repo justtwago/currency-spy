@@ -3,7 +3,7 @@ package com.example.currencyspy.ui.home.list
 import androidx.paging.PagingSource
 import com.example.currencyspy.ui.home.list.adapter.CurrencyRateItem
 import com.example.currencyspy.ui.home.list.adapter.CurrencyRateItemMapper
-import com.example.currencyspy.ui.home.list.pagesource.CurrencyRateItemsPagingSource
+import com.example.currencyspy.ui.home.list.paging.CurrencyRateItemsPagingSource
 import com.example.domain.CurrencyRate
 import com.example.networking.currency.CallResult
 import com.example.networking.currency.CurrencyRatesNetwork
@@ -25,10 +25,10 @@ class CurrencyRateItemsPagingSourceTest {
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        pagingSource = CurrencyRateItemsPagingSource(
+        pagingSource = CurrencyRateItemsPagingSource.Factory(
             currencyRatesNetwork = mockedCurrencyRatesNetwork,
             currencyRateItemMapper = mockedCurrencyRateItemMapper
-        )
+        ).create()
     }
 
     @Test
