@@ -9,4 +9,5 @@
     <string name="currency_rate_header_yesterday">Yesterday</string>
     <string name="currency_rate_price">%1s %2$s</string>
     <string name="currency_rate_base_currency">1 %s</string>
+    <string name="action_back">Back button</string>
 </resources>

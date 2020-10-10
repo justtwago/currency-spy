@@ -9,5 +9,25 @@
         android:id="@+id/homeFragment"
         android:name="com.example.currencyspy.ui.home.HomeFragment"
         android:label="HomeFragment"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/actionOpenDetails"
+            app:destination="@id/rateDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/rateDetailsFragment"
+        android:name="com.example.currencyspy.ui.details.RateDetailsFragment"
+        android:label="RateDetailsFragment"
+        tools:layout="@layout/fragment_rate_details">
+
+        <argument
+            android:name="currencyRateDetails"
+            app:argType="com.example.currencyspy.ui.details.model.CurrencyRateDetailsViewState" />
+    </fragment>
 </navigation>
