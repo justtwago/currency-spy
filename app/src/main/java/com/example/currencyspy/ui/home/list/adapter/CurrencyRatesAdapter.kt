@@ -9,12 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.currencyspy.R
 import com.example.currencyspy.databinding.ItemCurrencyRateBinding
 import com.example.currencyspy.databinding.ItemHeaderBinding
+import com.example.domain.CurrencyRate
 import java.time.LocalDate
 
 private const val HEADER_TYPE = 1
 private const val RATE_TYPE = 2
 
-class CurrencyRatesAdapter :
+class CurrencyRatesAdapter(val doOnRateClicked: (CurrencyRate) -> Unit) :
     PagingDataAdapter<CurrencyRateItem, RecyclerView.ViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -36,7 +37,7 @@ class CurrencyRatesAdapter :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (val item = getItem(position) ?: error("Currency rate item can't be null")) {
             is CurrencyRateItem.Header -> (holder as HeaderViewHolder).bind(item)
-            is CurrencyRateItem.Rate -> (holder as RateViewHolder).bind(item)
+            is CurrencyRateItem.Rate -> (holder as RateViewHolder).bind(item, doOnRateClicked)
         }
     }
 
@@ -81,19 +82,20 @@ class RateViewHolder(
     private val binding: ItemCurrencyRateBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(rateItem: CurrencyRateItem.Rate) = with(binding) {
-        baseCurrencyHeader.text = root.context.getString(
-            R.string.currency_rate_base_currency,
-            rateItem.currencyRate.baseCurrencyCode
-        )
-        rate.text = root.context.getString(
-            R.string.currency_rate_price,
-            rateItem.currencyRate.rate.toString(),
-            rateItem.currencyRate.currencyCode
-        )
-        currency.text = rateItem.currencyRate.currencyCode
-        rootLayout.setOnClickListener { }
-    }
+    fun bind(rateItem: CurrencyRateItem.Rate, doOnRateClicked: (CurrencyRate) -> Unit) =
+        with(binding) {
+            baseCurrencyHeader.text = root.context.getString(
+                R.string.currency_rate_base_currency,
+                rateItem.currencyRate.baseCurrencyCode
+            )
+            rate.text = root.context.getString(
+                R.string.currency_rate_price,
+                rateItem.currencyRate.rate.toString(),
+                rateItem.currencyRate.currencyCode
+            )
+            currency.text = rateItem.currencyRate.currencyCode
+            rootLayout.setOnClickListener { doOnRateClicked(rateItem.currencyRate) }
+        }
 
     companion object {
         fun create(parent: ViewGroup): RateViewHolder {
