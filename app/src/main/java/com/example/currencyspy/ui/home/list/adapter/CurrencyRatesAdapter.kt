@@ -2,6 +2,7 @@ package com.example.currencyspy.ui.home.list.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -58,18 +59,11 @@ class HeaderViewHolder(
 
     fun bind(headerItem: CurrencyRateItem.Header) = with(binding) {
         val today = LocalDate.now()
-        when (headerItem.date) {
-            today -> {
-                header.text = root.context.getString(R.string.currency_rate_header_today)
-            }
-            today.minusDays(1) -> {
-                header.text = root.context.getString(R.string.currency_rate_header_yesterday)
-                header.setCompoundDrawables(null, null, null, null)
-            }
-            else -> {
-                header.text = headerItem.date.toString()
-                header.setCompoundDrawables(null, null, null, null)
-            }
+        starIcon.isVisible = headerItem.date == today
+        header.text = when (headerItem.date) {
+            today -> root.context.getString(R.string.currency_rate_header_today)
+            today.minusDays(1) -> root.context.getString(R.string.currency_rate_header_yesterday)
+            else -> headerItem.date.toString()
         }
     }
 
