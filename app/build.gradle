@@ -46,12 +46,6 @@ android {
     buildFeatures {
         viewBinding = true
     }
-
-    testOptions {
-        unitTests.all {
-            useJUnitPlatform()
-        }
-    }
 }
 
 dependencies {
@@ -81,6 +75,5 @@ dependencies {
     testImplementation deps.kotlin.coroutines.test
     testImplementation deps.androidX.archCoreTesting
     testImplementation deps.junit
-    testImplementation deps.kotlinTestAssertions
     testImplementation deps.mockk
 }

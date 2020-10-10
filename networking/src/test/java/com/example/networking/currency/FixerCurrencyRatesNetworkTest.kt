@@ -2,11 +2,11 @@ package com.example.networking.currency
 
 import com.example.domain.CurrencyRate
 import com.example.networking.currency.model.HistoricalRatesResponse
-import io.kotest.matchers.shouldBe
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.test.runBlockingTest
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import java.lang.Exception
@@ -39,7 +39,7 @@ class FixerCurrencyRatesNetworkTest {
 
         val response = fixerCurrencyRatesNetwork.getCurrencyRates(today)
 
-        response shouldBe CallResult.Success(
+        val expectedResponse = CallResult.Success(
             listOf(
                 CurrencyRate(
                     date = today,
@@ -55,6 +55,8 @@ class FixerCurrencyRatesNetworkTest {
                 ),
             )
         )
+
+        assertEquals(expectedResponse, response)
     }
 
     @Test
@@ -65,7 +67,7 @@ class FixerCurrencyRatesNetworkTest {
 
         val response = fixerCurrencyRatesNetwork.getCurrencyRates(today)
 
-        response shouldBe CallResult.Error(exception)
+        assertEquals(CallResult.Error<List<CurrencyRate>>(exception), response)
     }
 
 }
