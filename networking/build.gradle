@@ -60,6 +60,5 @@ dependencies {
 
     testImplementation deps.kotlin.coroutines.test
     testImplementation deps.junit
-    testImplementation deps.kotlinTestAssertions
     testImplementation deps.mockk
 }

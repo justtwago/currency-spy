@@ -7,11 +7,11 @@ import com.example.currencyspy.ui.home.list.pagesource.CurrencyRateItemsPagingSo
 import com.example.domain.CurrencyRate
 import com.example.networking.currency.CallResult
 import com.example.networking.currency.CurrencyRatesNetwork
-import io.kotest.matchers.shouldBe
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.test.runBlockingTest
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import java.lang.Exception
@@ -48,9 +48,9 @@ class CurrencyRateItemsPagingSourceTest {
             placeholdersEnabled = false
         )
 
-        val loadResult = pagingSource.load(loadParams)
+        val loadedPage = pagingSource.load(loadParams)
 
-        loadResult shouldBe PagingSource.LoadResult.Page(
+        val expectedPage = PagingSource.LoadResult.Page(
             data = listOf(
                 CurrencyRateItem.Header(date = currencyRates.first().date),
                 CurrencyRateItem.Rate(currencyRate = currencyRates.first())
@@ -58,6 +58,8 @@ class CurrencyRateItemsPagingSourceTest {
             prevKey = null,
             nextKey = today.minusDays(1)
         )
+
+        assertEquals(expectedPage, loadedPage)
     }
 
     @Test
@@ -77,9 +79,9 @@ class CurrencyRateItemsPagingSourceTest {
             placeholdersEnabled = false
         )
 
-        val loadResult = pagingSource.load(loadParams)
+        val loadedPage = pagingSource.load(loadParams)
 
-        loadResult shouldBe PagingSource.LoadResult.Page(
+        val expectedPage = PagingSource.LoadResult.Page(
             data = listOf(
                 CurrencyRateItem.Header(date = currencyRates.first().date),
                 CurrencyRateItem.Rate(currencyRate = currencyRates.first())
@@ -87,6 +89,8 @@ class CurrencyRateItemsPagingSourceTest {
             prevKey = today,
             nextKey = today.minusDays(2)
         )
+
+        assertEquals(expectedPage, loadedPage)
     }
 
     @Test
@@ -103,9 +107,10 @@ class CurrencyRateItemsPagingSourceTest {
             placeholdersEnabled = false
         )
 
-        val loadResult = pagingSource.load(loadParams)
+        val loadedPage = pagingSource.load(loadParams)
+        val expectedError = PagingSource.LoadResult.Error<LocalDate, CurrencyRateItem>(exception)
 
-        loadResult shouldBe PagingSource.LoadResult.Error(exception)
+        assertEquals(expectedError, loadedPage)
     }
 
     private val today get() = LocalDate.now()
