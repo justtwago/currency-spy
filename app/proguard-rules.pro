@@ -1,2 +1,2 @@
 -keep class * extends androidx.fragment.app.Fragment{}
--keep class com.example.currencyspy.ui.details.model.CurrencyRateDetailsViewState
+-keep class com.example.currencyspy.ui.details.model.CurrencyRateUiModel

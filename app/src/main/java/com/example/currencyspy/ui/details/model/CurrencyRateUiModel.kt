@@ -5,14 +5,16 @@ import com.example.domain.CurrencyRate
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class CurrencyRateDetailsViewState(
+data class CurrencyRateUiModel(
     val formattedDate: String,
-    val formattedRate: String,
+    val currencyCode: String,
+    val rate: Double,
     val baseCurrencyCode: String
 ) : Parcelable
 
-fun CurrencyRate.asRateDetailsViewState() = CurrencyRateDetailsViewState(
+fun CurrencyRate.asUiModel() = CurrencyRateUiModel(
     baseCurrencyCode = baseCurrencyCode,
-    formattedRate = "$rate $currencyCode",
+    rate = rate,
+    currencyCode = currencyCode,
     formattedDate = date.toString()
 )

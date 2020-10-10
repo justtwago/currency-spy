@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import com.example.currencyspy.databinding.FragmentHomeBinding
-import com.example.currencyspy.ui.details.model.asRateDetailsViewState
+import com.example.currencyspy.ui.details.model.asUiModel
 import com.example.currencyspy.ui.home.list.adapter.CurrencyRatesAdapter
 import com.example.currencyspy.ui.home.list.adapter.LoaderAdapter
 import com.example.domain.CurrencyRate
@@ -88,8 +88,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToRateDetails(clickedCurrencyRate: CurrencyRate) {
-        val currencyDetailsViewState = clickedCurrencyRate.asRateDetailsViewState()
-        val direction = HomeFragmentDirections.actionOpenDetails(currencyDetailsViewState)
+        val currencyRateUiModel = clickedCurrencyRate.asUiModel()
+        val direction = HomeFragmentDirections.actionOpenDetails(currencyRateUiModel)
 
         findNavController().navigate(direction)
     }

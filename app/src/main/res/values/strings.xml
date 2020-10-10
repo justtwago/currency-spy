@@ -10,4 +10,7 @@
     <string name="currency_rate_price">%1s %2$s</string>
     <string name="currency_rate_base_currency">1 %s</string>
     <string name="action_back">Back button</string>
+    <string name="currency_rate_converter_title">Currency converter</string>
+    <string name="currency_rate_copy_button">Copy rate</string>
+    <string name="currency_rate_copy_snackbar">The currency rate copied!</string>
 </resources>

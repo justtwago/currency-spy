@@ -5,7 +5,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.time.LocalDate
 
-class CurrencyRateDetailsViewStateTest {
+class CurrencyRateUiModelTest {
 
     @Test
     fun `maps currency rate domain model to currency rate details view state`() {
@@ -17,12 +17,13 @@ class CurrencyRateDetailsViewStateTest {
             baseCurrencyCode = "EUR"
         )
 
-        val expectedViewState = CurrencyRateDetailsViewState(
+        val expectedRate = CurrencyRateUiModel(
             formattedDate = today.toString(),
             baseCurrencyCode = "EUR",
-            formattedRate = "1.0 PLN"
+            currencyCode = "PLN",
+            rate = 1.0
         )
 
-        assertEquals(expectedViewState, currencyRate.asRateDetailsViewState())
+        assertEquals(expectedRate, currencyRate.asUiModel())
     }
 }
