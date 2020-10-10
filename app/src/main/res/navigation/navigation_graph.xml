@@ -28,6 +28,6 @@
 
         <argument
             android:name="currencyRateDetails"
-            app:argType="com.example.currencyspy.ui.details.model.CurrencyRateDetailsViewState" />
+            app:argType="com.example.currencyspy.ui.details.model.CurrencyRateUiModel" />
     </fragment>
 </navigation>
